@@ -1,0 +1,22 @@
+--- a/scripts/build_speaking.py
++++ b/scripts/build_speaking.py
+@@ -512,11 +512,9 @@
+     if scripture:
+         description = f"{title} — {scripture}. Nathan Colestock at Christ the King Church."
+         meta_scripture = f"<span>·</span><span>{esc(scripture)}</span>"
+-        kicker = f"Preached {when} at Christ the King Church in Stillwater."
+     else:
+         description = f"{title}. Nathan Colestock."
+         meta_scripture = ""
+-        kicker = f"{when}. Men's pre-conference."
+     video = talk["youtube"]
+     watch = f"https://www.youtube.com/watch?v={video}"
+     has_cues = cue_count(talk["slug"]) > 0
+@@ -566,7 +564,6 @@
+           <span class="who"><b>Nathan Colestock</b><small>Christ the King Church</small></span>
+         </div>
+       </header>
+-      <p class="speaking-kicker">{esc(kicker)}</p>
+       <div class="rule"></div>
+ {stage_block}
+ {reading_block(talk["slug"])}

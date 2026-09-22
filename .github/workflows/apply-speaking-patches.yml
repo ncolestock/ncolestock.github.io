@@ -1,0 +1,56 @@
+name: Apply speaking patches
+on:
+  push:
+    paths:
+      - "speaking-patches/**"
+      - ".github/workflows/apply-speaking-patches.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply patches, replaces, rebuild indexes
+        run: |
+          set -euo pipefail
+          if [ ! -d speaking-patches ]; then echo "no patches"; exit 0; fi
+          python3 <<'PY'
+          import json, pathlib, subprocess, sys
+          root = pathlib.Path(".")
+          patch_dir = root / "speaking-patches"
+          manifest = json.loads((patch_dir / "MANIFEST.json").read_text())
+          # Restore builder from afb2ddc when patching it
+          for item in manifest:
+              src = patch_dir / item["file"]
+              dest = root / item["path"]
+              if item["type"] == "patch":
+                  if item.get("base") == "afb2ddc":
+                      blob = subprocess.check_output(
+                          ["git", "show", "afb2ddcd5ec848bbc0c250615c0dc25548180056:scripts/build_speaking.py"]
+                      )
+                      dest.write_bytes(blob)
+                  r = subprocess.run(["git", "apply", "--whitespace=nowarn", str(src)], capture_output=True, text=True)
+                  if r.returncode != 0:
+                      r = subprocess.run(["patch", "-p1", "--forward", "--batch", "-i", str(src)], capture_output=True, text=True)
+                      if r.returncode not in (0, 1):
+                          print("PATCH FAIL", item["file"], r.stdout, r.stderr)
+                          sys.exit(1)
+                  print("patched", item["path"])
+              elif item["type"] == "replace":
+                  dest.parent.mkdir(parents=True, exist_ok=True)
+                  dest.write_bytes(src.read_bytes())
+                  print("replaced", item["path"], dest.stat().st_size)
+          PY
+          # Rebuild talk indexes from readings + builder
+          python3 scripts/build_speaking.py
+          # Cleanup staging + prior broken deploy artifacts
+          rm -rf speaking-patches speaking-bundle speaking-deploy
+          rm -f speaking/.publish-ready-probe.txt speaking-deploy/.probe2 2>/dev/null || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "Speaking: publish-ready readings — no kicker, clean spines"
+          git push
