@@ -447,10 +447,20 @@
   }
   .talk-layout { display: block; }
   .talk-layout.is-follow-open {
-    display: grid;
-    grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.9fr);
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
     gap: 18px 22px;
     align-items: start;
+  }
+  .talk-layout.is-follow-open > .talk-main {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+  }
+  .talk-layout.is-follow-open > .follow-panel,
+  .talk-layout.is-follow-open > .transcript.follow-panel {
+    grid-column: 2;
+    grid-row: 1;
   }
   .talk-main { min-width: 0; }
   .talk-stage {
@@ -529,6 +539,8 @@
   .talk-layout .transcript.follow-panel {
     margin: 0;
     display: flex; flex-direction: column;
+    min-width: 0;
+    width: 100%;
     min-height: 0;
     position: sticky;
     top: 12px;
@@ -570,15 +582,22 @@
     color: var(--ink);
     border-color: color-mix(in srgb, var(--ink) 25%, var(--hair));
   }
-  @media (max-width: 860px) {
+  @media (max-width: 720px) {
     .talk-layout.is-follow-open {
-      grid-template-columns: minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1fr) !important;
+    }
+    .talk-layout.is-follow-open > .talk-main,
+    .talk-layout.is-follow-open > .follow-panel,
+    .talk-layout.is-follow-open > .transcript.follow-panel {
+      grid-column: 1;
+      grid-row: auto;
     }
     .talk-layout .transcript.follow-panel {
       position: relative;
       top: auto;
       height: auto;
-      max-height: 48vh;
+      max-height: 42vh;
+      order: 2;
     }
   }
   .transcript-hint, .transcript-fallback, .transcript-placeholder {
