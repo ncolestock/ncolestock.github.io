@@ -405,6 +405,46 @@
   .speaking-year {
     display: flex; align-items: center; gap: 14px;
     position: sticky; top: 0; z-index: 3;
+    margin: 0; padding: 22px 0 12px;
+    background: color-mix(in srgb, var(--ground) 92%, transparent);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  }
+  .speaking-year-label {
+    font-family: var(--sans); font-size: 12px; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+    margin: 0; line-height: 1; flex: 0 0 auto;
+  }
+  /* Hairline to the right of the year — never through the digits */
+  .speaking-year::after {
+    content: ""; flex: 1 1 auto; height: 1px; background: var(--hair);
+    align-self: center; min-width: 24px;
+  }
+  .speaking-list .speaking-year + li > .post { border-top: none; padding-top: 12px; }
+  .speaking-list .post.speaking-item { grid-template-columns: 68px minmax(0, 1fr); gap: 2px 12px; }
+  }
+
+  /* ---------- Speaking ---------- */
+  .preview-banner {
+    position: relative; z-index: 40;
+    font-family: var(--sans); font-size: 13.5px; line-height: 1.45; text-align: center;
+    color: var(--ink-soft); background: var(--cream); border-bottom: 1px solid var(--hair);
+    padding: 11px 64px;
+  }
+  .preview-banner strong {
+    font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    font-size: 11px; color: var(--accent); margin-right: 6px;
+  }
+  body:has(.preview-banner) #theme-toggle { top: 8px; }
+
+  .speaking { padding: 0; }
+  .speaking-intro {
+    color: var(--ink-soft); font-family: var(--serif); font-size: 20px; line-height: 1.6;
+    margin: 10px 0 0; max-width: none;
+  }
+  .speaking-list { list-style: none; margin: 8px 0 0; padding: 0; }
+  .speaking-year {
+    display: flex; align-items: center; gap: 14px;
+    position: sticky; top: 0; z-index: 3;
     margin: 0; padding: 18px 0 8px;
     background: color-mix(in srgb, var(--ground) 92%, transparent);
     backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);

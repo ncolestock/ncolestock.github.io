@@ -499,9 +499,7 @@ def reading_block(slug: str) -> str:
     body = path.read_text(encoding="utf-8").strip()
     if not body:
         return ""
-    return """      <section class="reading-transcript" aria-labelledby="reading-h">
-        <h2 id="reading-h">Written Transcript</h2>
-        <p class="reading-note"></p>
+    return """      <section class="reading-transcript" aria-label="Transcript">
         %s
       </section>""" % body
 
@@ -517,7 +515,6 @@ def talk_page(talk: dict) -> str:
         description = f"{title}. Nathan Colestock."
         meta_scripture = ""
     video = talk["youtube"]
-    watch = f"https://www.youtube.com/watch?v={video}"
     has_cues = cue_count(talk["slug"]) > 0
     if has_cues:
         stage_block = f"""      <div class="talk-stage" id="talk-stage">
@@ -568,7 +565,6 @@ def talk_page(talk: dict) -> str:
       <div class="rule"></div>
 {stage_block}
 {reading_block(talk["slug"])}
-      <p class="speaking-note">Watch on <a href="{esc(watch)}" target="_blank" rel="noopener">YouTube</a>.</p>
     </article>
     <footer class="home-foot">© 2026 Nathan Colestock</footer>
   </div>
