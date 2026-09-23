@@ -1,0 +1,49 @@
+name: Remove speaking cleanup label
+
+on:
+  push:
+    paths:
+      - ".github/workflows/remove-speaking-cleanup-label.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove label from builder and generated pages
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          label = '        <p class="reading-note">Cleaned up copy.</p>\\n'
+          builder = Path('scripts/build_speaking.py')
+          source = builder.read_text(encoding='utf-8')
+          updated = source.replace(label, '')
+          if updated == source:
+              raise SystemExit('builder label not found')
+          builder.write_text(updated, encoding='utf-8')
+          for page in Path('speaking').glob('*/index.html'):
+              text = page.read_text(encoding='utf-8')
+              page.write_text(text.replace(label, ''), encoding='utf-8')
+          Path('.github/workflows/remove-speaking-cleanup-label.yml').unlink()
+          PY
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          pattern = re.compile(r'cleaned[ -]?up|cleaned.?copy|editorial cleanup|polished copy', re.I)
+          hits = [str(path) for path in Path('speaking').glob('*/index.html') if pattern.search(path.read_text(encoding='utf-8'))]
+          if hits:
+              raise SystemExit('cleanup label remains in: ' + ', '.join(hits))
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/build_speaking.py speaking .github/workflows/remove-speaking-cleanup-label.yml
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git commit -m "Speaking: remove cleanup note from readings"
+          git push
