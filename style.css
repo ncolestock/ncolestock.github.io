@@ -403,23 +403,18 @@
   }
   .speaking-list { list-style: none; margin: 8px 0 0; padding: 0; }
   .speaking-year {
-    display: flex; align-items: center; gap: 14px;
-    position: sticky; top: 0; z-index: 3;
-    margin: 0; padding: 22px 0 12px;
-    background: color-mix(in srgb, var(--ground) 92%, transparent);
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    display: block;
+    margin: 0; padding: 22px 0 8px;
+    /* no sticky dark band / frosted square behind the year */
+    background: transparent;
   }
   .speaking-year-label {
     font-family: var(--sans); font-size: 12px; font-weight: 700;
     letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
-    margin: 0; line-height: 1; flex: 0 0 auto;
+    margin: 0; line-height: 1;
   }
-  /* Hairline to the right of the year — never through the digits */
-  .speaking-year::after {
-    content: ""; flex: 1 1 auto; height: 1px; background: var(--hair);
-    align-self: center; min-width: 24px;
-  }
-  .speaking-list .speaking-year + li > .post { border-top: none; padding-top: 12px; }
+  .speaking-year::after { content: none; display: none; }
+  .speaking-list .speaking-year + li > .post { border-top: none; padding-top: 10px; }
   .speaking-list .post.speaking-item {
     display: grid; grid-template-columns: 88px minmax(0, 1fr);
     gap: 2px 18px; align-items: start; padding: 20px 0 22px;
@@ -450,14 +445,19 @@
     color: var(--ink-soft); font-size: 17.5px; line-height: 1.55;
     margin: 14px 0 0;
   }
+  .talk-layout { display: block; }
+  .talk-layout.is-follow-open {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.9fr);
+    gap: 18px 22px;
+    align-items: start;
+  }
+  .talk-main { min-width: 0; }
   .talk-stage {
     display: grid;
-    gap: 18px;
+    gap: 12px;
     grid-template-columns: minmax(0, 1fr);
-    align-items: start; /* keep video 16:9 — never stretch to match Follow along */
-  }
-  .talk-stage.is-follow-open {
-    grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.9fr);
+    align-items: start;
   }
   .video-wrap {
     position: relative; width: 100%; aspect-ratio: 16 / 9; height: auto;
@@ -482,12 +482,15 @@
     color: var(--ink);
     border-color: color-mix(in srgb, var(--ink) 25%, var(--hair));
   }
-  .talk-stage.is-follow-open .follow-expand,
+  .talk-layout.is-follow-open .follow-expand,
   .follow-expand[hidden] { display: none !important; }
 
   .reading-transcript {
     margin: 28px 0 8px;
     max-width: 42rem;
+  }
+  .talk-layout.is-follow-open .reading-transcript {
+    max-width: none;
   }
   .reading-transcript h2 {
     font-family: Palatino, Georgia, serif;
@@ -523,19 +526,22 @@
     color: var(--ink-soft);
   }
 
-  .talk-stage .transcript.follow-panel {
+  .talk-layout .transcript.follow-panel {
     margin: 0;
     display: flex; flex-direction: column;
     min-height: 0;
-    height: auto;
-    max-height: min(70vh, 640px); /* JS syncs to video height when open */
+    position: sticky;
+    top: 12px;
+    height: calc(100vh - 24px);
+    max-height: calc(100vh - 24px);
     align-self: start;
     border: 1px solid var(--hair); border-radius: 10px; overflow: hidden;
     background: color-mix(in srgb, var(--raise) 88%, transparent);
   }
-  .talk-stage .transcript.follow-panel[hidden] {
+  .talk-layout .transcript.follow-panel[hidden] {
     display: none !important;
   }
+
   .transcript-bar {
     flex: none; padding: 12px 14px 10px;
     border-bottom: 1px solid var(--hair);
@@ -565,10 +571,13 @@
     border-color: color-mix(in srgb, var(--ink) 25%, var(--hair));
   }
   @media (max-width: 860px) {
-    .talk-stage.is-follow-open {
+    .talk-layout.is-follow-open {
       grid-template-columns: minmax(0, 1fr);
     }
-    .talk-stage .transcript.follow-panel {
+    .talk-layout .transcript.follow-panel {
+      position: relative;
+      top: auto;
+      height: auto;
       max-height: 48vh;
     }
   }
@@ -577,7 +586,23 @@
     color: var(--muted); margin: 0;
   }
   .transcript-fallback, .transcript-placeholder { font-size: 16px; line-height: 1.5; padding: 4px 2px 12px; }
-  .transcript-scroll { overflow-y: auto; padding: 6px; flex: 1; min-height: 0; }
+  .transcript-scroll {
+    overflow-y: auto;
+    padding: 6px 4px 6px 6px;
+    flex: 1;
+    min-height: 0;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--muted) 55%, transparent) transparent;
+  }
+  .transcript-scroll::-webkit-scrollbar { width: 6px; }
+  .transcript-scroll::-webkit-scrollbar-track { background: transparent; }
+  .transcript-scroll::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--muted) 45%, transparent);
+    border-radius: 999px;
+  }
+  .transcript-scroll::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, var(--muted) 70%, transparent);
+  }
   .cue {
     display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 8px; width: 100%;
     text-align: left; cursor: pointer; color: var(--ink-soft);

@@ -40,28 +40,15 @@
         </div>
       </header>
       <div class="rule"></div>
-      <div class="talk-stage" id="talk-stage">
-        <div class="video-wrap">
-          <iframe id="yt-player" src="https://www.youtube.com/embed/PVH3-8fm8rQ?enablejsapi=1&rel=0&playsinline=1" title="Pray Lots. Work Hard." allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        </div>
-        <button type="button" class="follow-expand" id="follow-expand" hidden>Follow along</button>
-        <section class="transcript follow-panel" id="transcript" aria-labelledby="transcript-h" hidden>
-          <div class="transcript-bar">
-            <div class="transcript-bar-row">
-              <h2 id="transcript-h">Follow along</h2>
-              <button type="button" class="follow-collapse" id="follow-collapse">Collapse</button>
+      <div class="talk-layout" id="talk-layout">
+        <div class="talk-main">
+          <div class="talk-stage" id="talk-stage">
+            <div class="video-wrap">
+              <iframe id="yt-player" src="https://www.youtube.com/embed/PVH3-8fm8rQ?enablejsapi=1&rel=0&playsinline=1" title="Pray Lots. Work Hard." allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
             </div>
-            <p class="transcript-hint" id="transcript-hint">Loading the transcript…</p>
+            <button type="button" class="follow-expand" id="follow-expand" hidden>Follow along</button>
           </div>
-          <div class="transcript-scroll" id="transcript-scroll" tabindex="0" aria-label="Follow-along lines"></div>
-        </section>
-      </div>
-      <noscript>
-        <div class="video-wrap">
-          <iframe src="https://www.youtube.com/embed/PVH3-8fm8rQ" title="Pray Lots. Work Hard." allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        </div>
-      </noscript>
-      <section class="reading-transcript" aria-label="Transcript">
+                <section class="reading-transcript" aria-label="Transcript">
         <div class="reading-body">
 <p>Will you please pray with me? Heavenly Father, may the words of my mouth and the meditations of all our hearts be acceptable in your sight, O Lord, our rock and our redeemer. Amen.</p>
 <p>Especially with this passage, I have emphasized that the story of Ezra and Nehemiah moves in a cycle. The cycle is common to many stories in Scripture. God gives a decree, as he did through Cyrus. He provides for his people so that they can accomplish his will. Then God’s enemies attack his people as they try to perform that will. God’s people defeat their enemies with God’s help. They consecrate themselves to God. And then, over and over again in the Old Testament, they compromise in their allegiance to God.</p>
@@ -179,6 +166,23 @@
 <p>Lord, we are your humble servants, and we are honored to be called by you to build and fight. Please prepare us through your word, especially this word in Nehemiah 4, to respond rightly when we are attacked. Give us grace to trust you completely and to pray for your help. Remind us that you fight for us, that you are invincibly on our side. Please give us grace to work hard as your servants. Help us to have hearts that care more for your great cause than for our personal comforts. We ask for these blessings because we are in Christ, your beloved Son. Amen.</p>
 </div>
       </section>
+        </div>
+        <section class="transcript follow-panel" id="transcript" aria-labelledby="transcript-h" hidden>
+          <div class="transcript-bar">
+            <div class="transcript-bar-row">
+              <h2 id="transcript-h">Follow along</h2>
+              <button type="button" class="follow-collapse" id="follow-collapse">Collapse</button>
+            </div>
+            <p class="transcript-hint" id="transcript-hint">Loading the transcript...</p>
+          </div>
+          <div class="transcript-scroll" id="transcript-scroll" tabindex="0" aria-label="Follow-along lines"></div>
+        </section>
+      </div>
+      <noscript>
+        <div class="video-wrap">
+          <iframe src="https://www.youtube.com/embed/PVH3-8fm8rQ" title="Pray Lots. Work Hard." allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+      </noscript>
     </article>
     <footer class="home-foot">© 2026 Nathan Colestock</footer>
   </div>
@@ -194,7 +198,7 @@
   var scrollLock = 0;
   var panel = document.getElementById("transcript-scroll");
   var hint = document.getElementById("transcript-hint");
-  var stage = document.getElementById("talk-stage");
+  var stage = document.getElementById("talk-layout") || document.getElementById("talk-stage");
   var follow = document.getElementById("transcript");
   var collapseBtn = document.getElementById("follow-collapse");
   var expandBtn = document.getElementById("follow-expand");
@@ -212,13 +216,6 @@
     if (h) return h + ":" + pad(m) + ":" + pad(s);
     return m + ":" + pad(s);
   }
-  function syncFollowHeight() {
-    if (!stage || !follow || follow.hidden) return;
-    var wrap = stage.querySelector(".video-wrap");
-    if (!wrap) return;
-    var h = wrap.getBoundingClientRect().height;
-    if (h > 40) follow.style.maxHeight = Math.round(h) + "px";
-  }
   function showExpand(show) {
     if (!expandBtn) return;
     expandBtn.hidden = !show;
@@ -230,15 +227,10 @@
     followOpened = true;
     userCollapsed = false;
     showExpand(false);
-    requestAnimationFrame(function () {
-      syncFollowHeight();
-      requestAnimationFrame(syncFollowHeight);
-    });
   }
   function collapseFollow() {
     if (!stage || !follow) return;
     follow.hidden = true;
-    follow.style.maxHeight = "";
     stage.classList.remove("is-follow-open");
     followOpened = false;
     userCollapsed = true;
@@ -355,9 +347,6 @@
   if (expandBtn) {
     expandBtn.addEventListener("click", function () { openFollow(); });
   }
-  window.addEventListener("resize", function () {
-    if (followOpened) syncFollowHeight();
-  });
   if (panel) {
     ["wheel", "touchstart", "pointerdown"].forEach(function (name) {
       panel.addEventListener(name, function () { scrollLock = Date.now() + 7000; }, { passive: true });

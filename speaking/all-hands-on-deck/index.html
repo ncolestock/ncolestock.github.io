@@ -40,28 +40,15 @@
         </div>
       </header>
       <div class="rule"></div>
-      <div class="talk-stage" id="talk-stage">
-        <div class="video-wrap">
-          <iframe id="yt-player" src="https://www.youtube.com/embed/u4l5NRBPx2E?enablejsapi=1&rel=0&playsinline=1" title="All Hands on Deck" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        </div>
-        <button type="button" class="follow-expand" id="follow-expand" hidden>Follow along</button>
-        <section class="transcript follow-panel" id="transcript" aria-labelledby="transcript-h" hidden>
-          <div class="transcript-bar">
-            <div class="transcript-bar-row">
-              <h2 id="transcript-h">Follow along</h2>
-              <button type="button" class="follow-collapse" id="follow-collapse">Collapse</button>
+      <div class="talk-layout" id="talk-layout">
+        <div class="talk-main">
+          <div class="talk-stage" id="talk-stage">
+            <div class="video-wrap">
+              <iframe id="yt-player" src="https://www.youtube.com/embed/u4l5NRBPx2E?enablejsapi=1&rel=0&playsinline=1" title="All Hands on Deck" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
             </div>
-            <p class="transcript-hint" id="transcript-hint">Loading the transcript…</p>
+            <button type="button" class="follow-expand" id="follow-expand" hidden>Follow along</button>
           </div>
-          <div class="transcript-scroll" id="transcript-scroll" tabindex="0" aria-label="Follow-along lines"></div>
-        </section>
-      </div>
-      <noscript>
-        <div class="video-wrap">
-          <iframe src="https://www.youtube.com/embed/u4l5NRBPx2E" title="All Hands on Deck" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        </div>
-      </noscript>
-      <section class="reading-transcript" aria-label="Transcript">
+                <section class="reading-transcript" aria-label="Transcript">
         <div class="reading-body">
 <p>In my introductory sermon a couple of weeks ago, we saw that the story of Ezra–Nehemiah is much like our own. God called them out of exile in Persia to build his temple and his city. They were opposed by their enemies and fought them off with God’s help. Likewise, we have been called out of exile in sin and death so that we can build the temple and the city, which is the church. We are promised persecution. But because God has made a new, better, stronger covenant with us, this chapter of the story will not end in tragedy and compromise. It will end with all things made new, the church as a spotless bride, the city of God expanding as the increase of Christ’s government has no end, and even death swallowed up in victory.</p>
 <p>This week our text tells us the outset of the story. Most basically, what we see is God calling his people to return to the land and rebuild the temple and the city. That is what this text is about: <strong>God’s calling to return and rebuild</strong>. God gives his people a mission, a calling. He equips them for it and provides everything they need. And then he sends them back, each with a role to play in his sacred mission. So that is where we are going to get: God’s calling on us to rebuild, and our role in his sacred mission. But before we can get there, we first need to situate the story of Ezra–Nehemiah in the previous prophecy, because it says here that this happened so that the word of the LORD by the mouth of Jeremiah might be fulfilled. After we are situated in the prophecies being fulfilled here, we will look at Cyrus’s decree, and at what it means for our own day when a pagan king does good. Then we will be ready to consider their mission and calling, and what it teaches us about our own. Here is the path. The prophecies behind the return. Then thanksgiving when pagan rulers do good. Then what it means to rebuild the temple and the city. Then the mission and the role God gives us.</p>
@@ -156,6 +143,23 @@
 <p>So pray that God would change your heart. Are you envious? Self-righteous? Prideful? Fearful? Pray for God to help you. In my box of prayer cards at home I have one from 2021, asking God to help me love two people who were hard for me to love. And by God’s grace he has helped me, as I keep asking him. Especially pray that God would give you a heart wholly devoted to the mission he has called you to.</p>
 </div>
       </section>
+        </div>
+        <section class="transcript follow-panel" id="transcript" aria-labelledby="transcript-h" hidden>
+          <div class="transcript-bar">
+            <div class="transcript-bar-row">
+              <h2 id="transcript-h">Follow along</h2>
+              <button type="button" class="follow-collapse" id="follow-collapse">Collapse</button>
+            </div>
+            <p class="transcript-hint" id="transcript-hint">Loading the transcript...</p>
+          </div>
+          <div class="transcript-scroll" id="transcript-scroll" tabindex="0" aria-label="Follow-along lines"></div>
+        </section>
+      </div>
+      <noscript>
+        <div class="video-wrap">
+          <iframe src="https://www.youtube.com/embed/u4l5NRBPx2E" title="All Hands on Deck" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+      </noscript>
     </article>
     <footer class="home-foot">© 2026 Nathan Colestock</footer>
   </div>
@@ -171,7 +175,7 @@
   var scrollLock = 0;
   var panel = document.getElementById("transcript-scroll");
   var hint = document.getElementById("transcript-hint");
-  var stage = document.getElementById("talk-stage");
+  var stage = document.getElementById("talk-layout") || document.getElementById("talk-stage");
   var follow = document.getElementById("transcript");
   var collapseBtn = document.getElementById("follow-collapse");
   var expandBtn = document.getElementById("follow-expand");
@@ -189,13 +193,6 @@
     if (h) return h + ":" + pad(m) + ":" + pad(s);
     return m + ":" + pad(s);
   }
-  function syncFollowHeight() {
-    if (!stage || !follow || follow.hidden) return;
-    var wrap = stage.querySelector(".video-wrap");
-    if (!wrap) return;
-    var h = wrap.getBoundingClientRect().height;
-    if (h > 40) follow.style.maxHeight = Math.round(h) + "px";
-  }
   function showExpand(show) {
     if (!expandBtn) return;
     expandBtn.hidden = !show;
@@ -207,15 +204,10 @@
     followOpened = true;
     userCollapsed = false;
     showExpand(false);
-    requestAnimationFrame(function () {
-      syncFollowHeight();
-      requestAnimationFrame(syncFollowHeight);
-    });
   }
   function collapseFollow() {
     if (!stage || !follow) return;
     follow.hidden = true;
-    follow.style.maxHeight = "";
     stage.classList.remove("is-follow-open");
     followOpened = false;
     userCollapsed = true;
@@ -332,9 +324,6 @@
   if (expandBtn) {
     expandBtn.addEventListener("click", function () { openFollow(); });
   }
-  window.addEventListener("resize", function () {
-    if (followOpened) syncFollowHeight();
-  });
   if (panel) {
     ["wheel", "touchstart", "pointerdown"].forEach(function (name) {
       panel.addEventListener(name, function () { scrollLock = Date.now() + 7000; }, { passive: true });

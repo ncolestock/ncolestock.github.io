@@ -40,28 +40,15 @@
         </div>
       </header>
       <div class="rule"></div>
-      <div class="talk-stage" id="talk-stage">
-        <div class="video-wrap">
-          <iframe id="yt-player" src="https://www.youtube.com/embed/pDdyDifCWiA?enablejsapi=1&rel=0&playsinline=1" title="Avoid Sabotage by Being Sober Minded" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        </div>
-        <button type="button" class="follow-expand" id="follow-expand" hidden>Follow along</button>
-        <section class="transcript follow-panel" id="transcript" aria-labelledby="transcript-h" hidden>
-          <div class="transcript-bar">
-            <div class="transcript-bar-row">
-              <h2 id="transcript-h">Follow along</h2>
-              <button type="button" class="follow-collapse" id="follow-collapse">Collapse</button>
+      <div class="talk-layout" id="talk-layout">
+        <div class="talk-main">
+          <div class="talk-stage" id="talk-stage">
+            <div class="video-wrap">
+              <iframe id="yt-player" src="https://www.youtube.com/embed/pDdyDifCWiA?enablejsapi=1&rel=0&playsinline=1" title="Avoid Sabotage by Being Sober Minded" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
             </div>
-            <p class="transcript-hint" id="transcript-hint">Loading the transcript…</p>
+            <button type="button" class="follow-expand" id="follow-expand" hidden>Follow along</button>
           </div>
-          <div class="transcript-scroll" id="transcript-scroll" tabindex="0" aria-label="Follow-along lines"></div>
-        </section>
-      </div>
-      <noscript>
-        <div class="video-wrap">
-          <iframe src="https://www.youtube.com/embed/pDdyDifCWiA" title="Avoid Sabotage by Being Sober Minded" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        </div>
-      </noscript>
-      <section class="reading-transcript" aria-label="Transcript">
+                <section class="reading-transcript" aria-label="Transcript">
         <div class="reading-body">
 <p>Nehemiah’s example teaches us how to avoid sabotage by being sober-minded.</p>
 <p>In Matthew 10:16 our Lord warned his disciples, “Behold, I am sending you out as sheep in the midst of wolves, so be wise as serpents and innocent as doves.” In this passage, Nehemiah stands before us as a vivid example of what it looks like to be wise as serpents while remaining innocent as doves.</p>
@@ -151,6 +138,23 @@
 <p>Heavenly Father, you are without parts or passions and therefore always perfectly sober-minded. You are never drawn aside by feelings or tricked by enemies. We praise you for it. Please help us to imitate you in this as far as is appropriate and possible for us as your finite creatures. Make us sober-minded. Amen.</p>
 </div>
       </section>
+        </div>
+        <section class="transcript follow-panel" id="transcript" aria-labelledby="transcript-h" hidden>
+          <div class="transcript-bar">
+            <div class="transcript-bar-row">
+              <h2 id="transcript-h">Follow along</h2>
+              <button type="button" class="follow-collapse" id="follow-collapse">Collapse</button>
+            </div>
+            <p class="transcript-hint" id="transcript-hint">Loading the transcript...</p>
+          </div>
+          <div class="transcript-scroll" id="transcript-scroll" tabindex="0" aria-label="Follow-along lines"></div>
+        </section>
+      </div>
+      <noscript>
+        <div class="video-wrap">
+          <iframe src="https://www.youtube.com/embed/pDdyDifCWiA" title="Avoid Sabotage by Being Sober Minded" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+      </noscript>
     </article>
     <footer class="home-foot">© 2026 Nathan Colestock</footer>
   </div>
@@ -166,7 +170,7 @@
   var scrollLock = 0;
   var panel = document.getElementById("transcript-scroll");
   var hint = document.getElementById("transcript-hint");
-  var stage = document.getElementById("talk-stage");
+  var stage = document.getElementById("talk-layout") || document.getElementById("talk-stage");
   var follow = document.getElementById("transcript");
   var collapseBtn = document.getElementById("follow-collapse");
   var expandBtn = document.getElementById("follow-expand");
@@ -184,13 +188,6 @@
     if (h) return h + ":" + pad(m) + ":" + pad(s);
     return m + ":" + pad(s);
   }
-  function syncFollowHeight() {
-    if (!stage || !follow || follow.hidden) return;
-    var wrap = stage.querySelector(".video-wrap");
-    if (!wrap) return;
-    var h = wrap.getBoundingClientRect().height;
-    if (h > 40) follow.style.maxHeight = Math.round(h) + "px";
-  }
   function showExpand(show) {
     if (!expandBtn) return;
     expandBtn.hidden = !show;
@@ -202,15 +199,10 @@
     followOpened = true;
     userCollapsed = false;
     showExpand(false);
-    requestAnimationFrame(function () {
-      syncFollowHeight();
-      requestAnimationFrame(syncFollowHeight);
-    });
   }
   function collapseFollow() {
     if (!stage || !follow) return;
     follow.hidden = true;
-    follow.style.maxHeight = "";
     stage.classList.remove("is-follow-open");
     followOpened = false;
     userCollapsed = true;
@@ -327,9 +319,6 @@
   if (expandBtn) {
     expandBtn.addEventListener("click", function () { openFollow(); });
   }
-  window.addEventListener("resize", function () {
-    if (followOpened) syncFollowHeight();
-  });
   if (panel) {
     ["wheel", "touchstart", "pointerdown"].forEach(function (name) {
       panel.addEventListener(name, function () { scrollLock = Date.now() + 7000; }, { passive: true });

@@ -40,28 +40,15 @@
         </div>
       </header>
       <div class="rule"></div>
-      <div class="talk-stage" id="talk-stage">
-        <div class="video-wrap">
-          <iframe id="yt-player" src="https://www.youtube.com/embed/qxz1pWA9Pz4?enablejsapi=1&rel=0&playsinline=1" title="From Confusion to Obedience" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        </div>
-        <button type="button" class="follow-expand" id="follow-expand" hidden>Follow along</button>
-        <section class="transcript follow-panel" id="transcript" aria-labelledby="transcript-h" hidden>
-          <div class="transcript-bar">
-            <div class="transcript-bar-row">
-              <h2 id="transcript-h">Follow along</h2>
-              <button type="button" class="follow-collapse" id="follow-collapse">Collapse</button>
+      <div class="talk-layout" id="talk-layout">
+        <div class="talk-main">
+          <div class="talk-stage" id="talk-stage">
+            <div class="video-wrap">
+              <iframe id="yt-player" src="https://www.youtube.com/embed/qxz1pWA9Pz4?enablejsapi=1&rel=0&playsinline=1" title="From Confusion to Obedience" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
             </div>
-            <p class="transcript-hint" id="transcript-hint">Loading the transcript…</p>
+            <button type="button" class="follow-expand" id="follow-expand" hidden>Follow along</button>
           </div>
-          <div class="transcript-scroll" id="transcript-scroll" tabindex="0" aria-label="Follow-along lines"></div>
-        </section>
-      </div>
-      <noscript>
-        <div class="video-wrap">
-          <iframe src="https://www.youtube.com/embed/qxz1pWA9Pz4" title="From Confusion to Obedience" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        </div>
-      </noscript>
-      <section class="reading-transcript" aria-label="Transcript">
+                <section class="reading-transcript" aria-label="Transcript">
         <div class="reading-body">
 <p>God turns his people’s confusion into obedience by correcting, restraining, and leading them to walk in God’s ways.</p>
 <p>Hiroo Onoda, a Japanese lieutenant, was stationed on Lubang Island in early 1945. He ended up alone on the island. Later the same year, the war ended. Leaflets were dropped, newspapers were left, search parties went out looking for him. But he dismissed all of it as enemy propaganda designed to trick him. He didn’t believe the war was over until March 1974, when his former commanding officer flew to the island and personally relieved him of duty. He was confused. And because he was confused, he fought a war that was over for 29 years. My point is that you can pay a very high price for being confused. But what a blessing it is to be corrected so that you can turn away from the way of confusion. So I’m glad that God gave us Nehemiah 8:9–18 to show us how confusion turns to obedience.</p>
@@ -144,6 +131,23 @@
 <p>Just like the story of the whole Bible teaches us, our only hope is for God to give us new hearts. And in the new covenant he has. We don’t have to descend into a cycle of sin and rebellion. We can joyfully obey our God because he has made us new. So let’s walk in that new way, abandoning our confusion, being corrected by God’s word, restraining our passions, and being led by those God gives us. Amen.</p>
 </div>
       </section>
+        </div>
+        <section class="transcript follow-panel" id="transcript" aria-labelledby="transcript-h" hidden>
+          <div class="transcript-bar">
+            <div class="transcript-bar-row">
+              <h2 id="transcript-h">Follow along</h2>
+              <button type="button" class="follow-collapse" id="follow-collapse">Collapse</button>
+            </div>
+            <p class="transcript-hint" id="transcript-hint">Loading the transcript...</p>
+          </div>
+          <div class="transcript-scroll" id="transcript-scroll" tabindex="0" aria-label="Follow-along lines"></div>
+        </section>
+      </div>
+      <noscript>
+        <div class="video-wrap">
+          <iframe src="https://www.youtube.com/embed/qxz1pWA9Pz4" title="From Confusion to Obedience" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+      </noscript>
     </article>
     <footer class="home-foot">© 2026 Nathan Colestock</footer>
   </div>
@@ -159,7 +163,7 @@
   var scrollLock = 0;
   var panel = document.getElementById("transcript-scroll");
   var hint = document.getElementById("transcript-hint");
-  var stage = document.getElementById("talk-stage");
+  var stage = document.getElementById("talk-layout") || document.getElementById("talk-stage");
   var follow = document.getElementById("transcript");
   var collapseBtn = document.getElementById("follow-collapse");
   var expandBtn = document.getElementById("follow-expand");
@@ -177,13 +181,6 @@
     if (h) return h + ":" + pad(m) + ":" + pad(s);
     return m + ":" + pad(s);
   }
-  function syncFollowHeight() {
-    if (!stage || !follow || follow.hidden) return;
-    var wrap = stage.querySelector(".video-wrap");
-    if (!wrap) return;
-    var h = wrap.getBoundingClientRect().height;
-    if (h > 40) follow.style.maxHeight = Math.round(h) + "px";
-  }
   function showExpand(show) {
     if (!expandBtn) return;
     expandBtn.hidden = !show;
@@ -195,15 +192,10 @@
     followOpened = true;
     userCollapsed = false;
     showExpand(false);
-    requestAnimationFrame(function () {
-      syncFollowHeight();
-      requestAnimationFrame(syncFollowHeight);
-    });
   }
   function collapseFollow() {
     if (!stage || !follow) return;
     follow.hidden = true;
-    follow.style.maxHeight = "";
     stage.classList.remove("is-follow-open");
     followOpened = false;
     userCollapsed = true;
@@ -320,9 +312,6 @@
   if (expandBtn) {
     expandBtn.addEventListener("click", function () { openFollow(); });
   }
-  window.addEventListener("resize", function () {
-    if (followOpened) syncFollowHeight();
-  });
   if (panel) {
     ["wheel", "touchstart", "pointerdown"].forEach(function (name) {
       panel.addEventListener(name, function () { scrollLock = Date.now() + 7000; }, { passive: true });

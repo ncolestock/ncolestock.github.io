@@ -40,28 +40,15 @@
         </div>
       </header>
       <div class="rule"></div>
-      <div class="talk-stage" id="talk-stage">
-        <div class="video-wrap">
-          <iframe id="yt-player" src="https://www.youtube.com/embed/KGSU5HQGxEQ?enablejsapi=1&rel=0&playsinline=1" title="From Fear to Faith Again: A Saint&#x27;s Journey" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        </div>
-        <button type="button" class="follow-expand" id="follow-expand" hidden>Follow along</button>
-        <section class="transcript follow-panel" id="transcript" aria-labelledby="transcript-h" hidden>
-          <div class="transcript-bar">
-            <div class="transcript-bar-row">
-              <h2 id="transcript-h">Follow along</h2>
-              <button type="button" class="follow-collapse" id="follow-collapse">Collapse</button>
+      <div class="talk-layout" id="talk-layout">
+        <div class="talk-main">
+          <div class="talk-stage" id="talk-stage">
+            <div class="video-wrap">
+              <iframe id="yt-player" src="https://www.youtube.com/embed/KGSU5HQGxEQ?enablejsapi=1&rel=0&playsinline=1" title="From Fear to Faith Again: A Saint&#x27;s Journey" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
             </div>
-            <p class="transcript-hint" id="transcript-hint">Loading the transcript…</p>
+            <button type="button" class="follow-expand" id="follow-expand" hidden>Follow along</button>
           </div>
-          <div class="transcript-scroll" id="transcript-scroll" tabindex="0" aria-label="Follow-along lines"></div>
-        </section>
-      </div>
-      <noscript>
-        <div class="video-wrap">
-          <iframe src="https://www.youtube.com/embed/KGSU5HQGxEQ" title="From Fear to Faith Again: A Saint&#x27;s Journey" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        </div>
-      </noscript>
-      <section class="reading-transcript" aria-label="Transcript">
+                <section class="reading-transcript" aria-label="Transcript">
         <div class="reading-body">
 <p>These three chapters from Ezra tell a story all of us have lived: from fear to faith and back to faith again. It is a familiar story in Scripture:</p>
 <ul><li>Aaron stands with Moses as God’s faithful mouthpiece, wielding the power of God through the ten plagues. But when Moses ascends the mountain, Aaron fears the people and fashions a golden calf. Later he returns to faith and serves the Lord.</li><li>Peter confesses that Jesus is the Christ, yet only moments later denies him three times out of fear of the Jewish leaders. When Jesus rises from the dead, Peter believes again and affirms his love for the risen Lord.</li></ul>
@@ -140,6 +127,23 @@ for his steadfast love endures forever toward Israel.”</p>
 <p>Friends, God has promised to be our God and that we would be his people. There is no danger, no loss, no risk that is not worth enduring in order to have him. If God is for us, who can be against us? The deepest desire of our hearts—so strong that they are restless until they find it—is to know our God, to return to his garden and walk in his pleasure. And he has offered that to us. He has opened the way into his favor through the cross, so that all who believe in his Son are permanently forgiven and receive his Spirit to help them walk in his ways. That is what your soul is truly hungry for. So turn from your sin and come to the table now. Eat and drink of his goodness. Receive his tangible grace. Renew covenant with the God who has promised never to leave us or forsake us.</p>
 </div>
       </section>
+        </div>
+        <section class="transcript follow-panel" id="transcript" aria-labelledby="transcript-h" hidden>
+          <div class="transcript-bar">
+            <div class="transcript-bar-row">
+              <h2 id="transcript-h">Follow along</h2>
+              <button type="button" class="follow-collapse" id="follow-collapse">Collapse</button>
+            </div>
+            <p class="transcript-hint" id="transcript-hint">Loading the transcript...</p>
+          </div>
+          <div class="transcript-scroll" id="transcript-scroll" tabindex="0" aria-label="Follow-along lines"></div>
+        </section>
+      </div>
+      <noscript>
+        <div class="video-wrap">
+          <iframe src="https://www.youtube.com/embed/KGSU5HQGxEQ" title="From Fear to Faith Again: A Saint&#x27;s Journey" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+      </noscript>
     </article>
     <footer class="home-foot">© 2026 Nathan Colestock</footer>
   </div>
@@ -155,7 +159,7 @@ for his steadfast love endures forever toward Israel.”</p>
   var scrollLock = 0;
   var panel = document.getElementById("transcript-scroll");
   var hint = document.getElementById("transcript-hint");
-  var stage = document.getElementById("talk-stage");
+  var stage = document.getElementById("talk-layout") || document.getElementById("talk-stage");
   var follow = document.getElementById("transcript");
   var collapseBtn = document.getElementById("follow-collapse");
   var expandBtn = document.getElementById("follow-expand");
@@ -173,13 +177,6 @@ for his steadfast love endures forever toward Israel.”</p>
     if (h) return h + ":" + pad(m) + ":" + pad(s);
     return m + ":" + pad(s);
   }
-  function syncFollowHeight() {
-    if (!stage || !follow || follow.hidden) return;
-    var wrap = stage.querySelector(".video-wrap");
-    if (!wrap) return;
-    var h = wrap.getBoundingClientRect().height;
-    if (h > 40) follow.style.maxHeight = Math.round(h) + "px";
-  }
   function showExpand(show) {
     if (!expandBtn) return;
     expandBtn.hidden = !show;
@@ -191,15 +188,10 @@ for his steadfast love endures forever toward Israel.”</p>
     followOpened = true;
     userCollapsed = false;
     showExpand(false);
-    requestAnimationFrame(function () {
-      syncFollowHeight();
-      requestAnimationFrame(syncFollowHeight);
-    });
   }
   function collapseFollow() {
     if (!stage || !follow) return;
     follow.hidden = true;
-    follow.style.maxHeight = "";
     stage.classList.remove("is-follow-open");
     followOpened = false;
     userCollapsed = true;
@@ -316,9 +308,6 @@ for his steadfast love endures forever toward Israel.”</p>
   if (expandBtn) {
     expandBtn.addEventListener("click", function () { openFollow(); });
   }
-  window.addEventListener("resize", function () {
-    if (followOpened) syncFollowHeight();
-  });
   if (panel) {
     ["wheel", "touchstart", "pointerdown"].forEach(function (name) {
       panel.addEventListener(name, function () { scrollLock = Date.now() + 7000; }, { passive: true });

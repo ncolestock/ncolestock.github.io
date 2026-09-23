@@ -136,7 +136,7 @@ TALK_JS = r"""<script>
   var scrollLock = 0;
   var panel = document.getElementById("transcript-scroll");
   var hint = document.getElementById("transcript-hint");
-  var stage = document.getElementById("talk-stage");
+  var stage = document.getElementById("talk-layout") || document.getElementById("talk-stage");
   var follow = document.getElementById("transcript");
   var collapseBtn = document.getElementById("follow-collapse");
   var expandBtn = document.getElementById("follow-expand");
@@ -154,13 +154,6 @@ TALK_JS = r"""<script>
     if (h) return h + ":" + pad(m) + ":" + pad(s);
     return m + ":" + pad(s);
   }
-  function syncFollowHeight() {
-    if (!stage || !follow || follow.hidden) return;
-    var wrap = stage.querySelector(".video-wrap");
-    if (!wrap) return;
-    var h = wrap.getBoundingClientRect().height;
-    if (h > 40) follow.style.maxHeight = Math.round(h) + "px";
-  }
   function showExpand(show) {
     if (!expandBtn) return;
     expandBtn.hidden = !show;
@@ -172,15 +165,10 @@ TALK_JS = r"""<script>
     followOpened = true;
     userCollapsed = false;
     showExpand(false);
-    requestAnimationFrame(function () {
-      syncFollowHeight();
-      requestAnimationFrame(syncFollowHeight);
-    });
   }
   function collapseFollow() {
     if (!stage || !follow) return;
     follow.hidden = true;
-    follow.style.maxHeight = "";
     stage.classList.remove("is-follow-open");
     followOpened = false;
     userCollapsed = true;
@@ -297,9 +285,6 @@ TALK_JS = r"""<script>
   if (expandBtn) {
     expandBtn.addEventListener("click", function () { openFollow(); });
   }
-  window.addEventListener("resize", function () {
-    if (followOpened) syncFollowHeight();
-  });
   if (panel) {
     ["wheel", "touchstart", "pointerdown"].forEach(function (name) {
       panel.addEventListener(name, function () { scrollLock = Date.now() + 7000; }, { passive: true });
@@ -550,18 +535,23 @@ def talk_page(talk: dict) -> str:
     video = talk["youtube"]
     has_cues = cue_count(talk["slug"]) > 0
     if has_cues:
-        stage_block = f"""      <div class="talk-stage" id="talk-stage">
-        <div class="video-wrap">
-          <iframe id="yt-player" src="https://www.youtube.com/embed/{esc(video)}?enablejsapi=1&rel=0&playsinline=1" title="{esc(title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        stage_block = f"""      <div class="talk-layout" id="talk-layout">
+        <div class="talk-main">
+          <div class="talk-stage" id="talk-stage">
+            <div class="video-wrap">
+              <iframe id="yt-player" src="https://www.youtube.com/embed/{esc(video)}?enablejsapi=1&rel=0&playsinline=1" title="{esc(title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+            <button type="button" class="follow-expand" id="follow-expand" hidden>Follow along</button>
+          </div>
+          __READING_SLOT__
         </div>
-        <button type="button" class="follow-expand" id="follow-expand" hidden>Follow along</button>
         <section class="transcript follow-panel" id="transcript" aria-labelledby="transcript-h" hidden>
           <div class="transcript-bar">
             <div class="transcript-bar-row">
               <h2 id="transcript-h">Follow along</h2>
               <button type="button" class="follow-collapse" id="follow-collapse">Collapse</button>
             </div>
-            <p class="transcript-hint" id="transcript-hint">Loading the transcript…</p>
+            <p class="transcript-hint" id="transcript-hint">Loading the transcript...</p>
           </div>
           <div class="transcript-scroll" id="transcript-scroll" tabindex="0" aria-label="Follow-along lines"></div>
         </section>
@@ -597,8 +587,7 @@ def talk_page(talk: dict) -> str:
         </div>
       </header>
       <div class="rule"></div>
-{stage_block}
-{reading_block(talk["slug"])}
+{stage_block.replace("__READING_SLOT__", reading_block(talk["slug"])) if has_cues else (stage_block + "\n" + reading_block(talk["slug"]))}
     </article>
     <footer class="home-foot">© 2026 Nathan Colestock</footer>
   </div>
