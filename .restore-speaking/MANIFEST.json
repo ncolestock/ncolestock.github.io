@@ -1,5 +1,5 @@
 {
-  "parts": 15,
+  "parts": 37,
   "sha256": "639ef776c6af9b3206c9a47d5d7e61a8e5eddcb7cbe6d21160d718b6c31ea3c7",
   "path": "scripts/build_speaking.py"
 }
