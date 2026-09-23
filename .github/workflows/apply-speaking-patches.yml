@@ -1,0 +1,38 @@
+name: Apply speaking patches
+on:
+  push:
+    paths:
+      - "speaking-patches/**"
+      - ".github/workflows/apply-speaking-patches.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply replace patches
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import json, pathlib, shutil
+          root = pathlib.Path(".")
+          patch_dir = root / "speaking-patches"
+          manifest = json.loads((patch_dir / "MANIFEST.json").read_text())
+          for item in manifest:
+              assert item["type"] == "replace"
+              src = patch_dir / item["file"]
+              dest = root / item["path"]
+              dest.parent.mkdir(parents=True, exist_ok=True)
+              dest.write_bytes(src.read_bytes())
+              print("replaced", item["path"], dest.stat().st_size)
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add speaking/*/reading.html speaking/*/index.html
+          rm -rf speaking-patches
+          git add -A
+          if git diff --cached --quiet; then echo No changes; exit 0; fi
+          git commit -m "Speaking: raise all 18 readings to written-sermon prose"
+          git push

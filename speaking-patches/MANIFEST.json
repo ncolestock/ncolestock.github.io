@@ -1,0 +1,182 @@
+[
+  {
+    "type": "replace",
+    "path": "speaking/all-hands-on-deck/index.html",
+    "file": "speaking/all-hands-on-deck/index.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/all-hands-on-deck/reading.html",
+    "file": "speaking/all-hands-on-deck/reading.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/avoid-sabotage/index.html",
+    "file": "speaking/avoid-sabotage/index.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/avoid-sabotage/reading.html",
+    "file": "speaking/avoid-sabotage/reading.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/build-and-fight/index.html",
+    "file": "speaking/build-and-fight/index.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/build-and-fight/reading.html",
+    "file": "speaking/build-and-fight/reading.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/fear-to-faith-favor/index.html",
+    "file": "speaking/fear-to-faith-favor/index.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/fear-to-faith-favor/reading.html",
+    "file": "speaking/fear-to-faith-favor/reading.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/from-confusion-to-obedience/index.html",
+    "file": "speaking/from-confusion-to-obedience/index.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/from-confusion-to-obedience/reading.html",
+    "file": "speaking/from-confusion-to-obedience/reading.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/from-fear-to-faith-again/index.html",
+    "file": "speaking/from-fear-to-faith-again/index.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/from-fear-to-faith-again/reading.html",
+    "file": "speaking/from-fear-to-faith-again/reading.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/from-ignorance-to-repentance/index.html",
+    "file": "speaking/from-ignorance-to-repentance/index.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/from-ignorance-to-repentance/reading.html",
+    "file": "speaking/from-ignorance-to-repentance/reading.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/good-shepherd/index.html",
+    "file": "speaking/good-shepherd/index.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/good-shepherd/reading.html",
+    "file": "speaking/good-shepherd/reading.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/guard-the-gates/index.html",
+    "file": "speaking/guard-the-gates/index.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/guard-the-gates/reading.html",
+    "file": "speaking/guard-the-gates/reading.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/how-can-i-start-building/index.html",
+    "file": "speaking/how-can-i-start-building/index.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/how-can-i-start-building/reading.html",
+    "file": "speaking/how-can-i-start-building/reading.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/learning-to-live-in-the-story/index.html",
+    "file": "speaking/learning-to-live-in-the-story/index.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/learning-to-live-in-the-story/reading.html",
+    "file": "speaking/learning-to-live-in-the-story/reading.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/make-war-not-peace/index.html",
+    "file": "speaking/make-war-not-peace/index.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/make-war-not-peace/reading.html",
+    "file": "speaking/make-war-not-peace/reading.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/mens-preconference-2/index.html",
+    "file": "speaking/mens-preconference-2/index.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/mens-preconference-2/reading.html",
+    "file": "speaking/mens-preconference-2/reading.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/pray-lots-work-hard/index.html",
+    "file": "speaking/pray-lots-work-hard/index.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/pray-lots-work-hard/reading.html",
+    "file": "speaking/pray-lots-work-hard/reading.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/put-your-name-on-something/index.html",
+    "file": "speaking/put-your-name-on-something/index.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/put-your-name-on-something/reading.html",
+    "file": "speaking/put-your-name-on-something/reading.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/resurrection-jesus-is-king/index.html",
+    "file": "speaking/resurrection-jesus-is-king/index.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/resurrection-jesus-is-king/reading.html",
+    "file": "speaking/resurrection-jesus-is-king/reading.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/who-can-stand-against-us/index.html",
+    "file": "speaking/who-can-stand-against-us/index.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/who-can-stand-against-us/reading.html",
+    "file": "speaking/who-can-stand-against-us/reading.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/win-the-world-through-the-word/index.html",
+    "file": "speaking/win-the-world-through-the-word/index.html"
+  },
+  {
+    "type": "replace",
+    "path": "speaking/win-the-world-through-the-word/reading.html",
+    "file": "speaking/win-the-world-through-the-word/reading.html"
+  }
+]
