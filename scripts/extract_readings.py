@@ -53,7 +53,7 @@ DEFAULT_MAP: dict[str, str] = {
     "how-can-i-start-building": "how-can-i-start-building.docx",
     "learning-to-live-in-the-story": "learning-to-live-in-the-story.docx",
     "make-war-not-peace": "make-war-not-peace.docx",
-    "mens-preconference-2": "cues",
+    "youre-responsible-for-results": "cues",
     "pray-lots-work-hard": "pray-lots-work-hard-from-cues.txt",
     "put-your-name-on-something": "put-your-name-on-something.docx",
     "resurrection-jesus-is-king": "resurrection-jesus-is-king.docx",
@@ -63,7 +63,7 @@ DEFAULT_MAP: dict[str, str] = {
 
 SKIP_OUTLINE = {"put-your-name-on-something"}
 PROMOTE_CAPS = {"build-and-fight"}
-CUE_SLUGS = {"pray-lots-work-hard", "from-ignorance-to-repentance", "mens-preconference-2"}
+CUE_SLUGS = {"pray-lots-work-hard", "from-ignorance-to-repentance", "youre-responsible-for-results"}
 
 GAP = 2.5
 MIN_PARA = 220
@@ -390,7 +390,7 @@ def write_map(statuses: dict[str, str], sources: dict[str, str]) -> None:
     notes = {
         "pray-lots-work-hard": "Cue-derived prose (docx was scripture-only). Flat paragraphs.",
         "from-ignorance-to-repentance": "No full manuscript; cue-based reading. Flat paragraphs.",
-        "mens-preconference-2": "No manuscript on hand; cue/prior reading.",
+        "youre-responsible-for-results": "No manuscript on hand; cue/prior reading.",
         "put-your-name-on-something": "Skip First Draft / Explanatory Outline; start at Heading Introduction; keep sermon section headings.",
         "from-confusion-to-obedience": "PDF; section titles (Introduction, Review, Correcting, …) → h2.",
         "build-and-fight": "Use second manuscript copy after Titus 2 note (closer to video cues); never both tabs. ALL-CAPS → h2; lists/strong preserved.",

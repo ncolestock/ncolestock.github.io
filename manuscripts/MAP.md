@@ -19,7 +19,7 @@ Then build: `python3 scripts/build_speaking.py`
 | how-can-i-start-building | `how-can-i-start-building.docx` |  |
 | learning-to-live-in-the-story | `learning-to-live-in-the-story.docx` |  |
 | make-war-not-peace | `make-war-not-peace.docx` |  |
-| mens-preconference-2 | `cues` | No manuscript on hand; cue/prior reading. |
+| youre-responsible-for-results | `cues` | No manuscript on hand; cue/prior reading. |
 | pray-lots-work-hard | `pray-lots-work-hard-from-cues.txt` | Cue-derived prose (docx was scripture-only). Flat paragraphs. |
 | put-your-name-on-something | `put-your-name-on-something.docx` | First Draft only; skip outline/duplicates/Lord's Supper; short Title Case h2s; strip chrome. |
 | resurrection-jesus-is-king | `resurrection-jesus-is-king.docx` | Second Draft only; strip draft chrome + meta outline list; consistent Title Case h2s. |
