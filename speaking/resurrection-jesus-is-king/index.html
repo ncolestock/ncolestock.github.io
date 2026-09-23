@@ -44,6 +44,7 @@
         <div class="video-wrap">
           <iframe id="yt-player" src="https://www.youtube.com/embed/whJ2K55b0kU?enablejsapi=1&rel=0&playsinline=1" title="The Resurrection Means Jesus Is King of Everything" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
         </div>
+        <button type="button" class="follow-expand" id="follow-expand" hidden>Follow along</button>
         <section class="transcript follow-panel" id="transcript" aria-labelledby="transcript-h" hidden>
           <div class="transcript-bar">
             <div class="transcript-bar-row">
@@ -185,9 +186,11 @@
   var stage = document.getElementById("talk-stage");
   var follow = document.getElementById("transcript");
   var collapseBtn = document.getElementById("follow-collapse");
+  var expandBtn = document.getElementById("follow-expand");
   var smooth = !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   var FALLBACK = "No captions are available for this talk yet. The video still plays above.";
   var followOpened = false;
+  var userCollapsed = false;
 
   function pad(n) { return (n < 10 ? "0" : "") + n; }
   function fmt(t) {
@@ -198,17 +201,37 @@
     if (h) return h + ":" + pad(m) + ":" + pad(s);
     return m + ":" + pad(s);
   }
+  function syncFollowHeight() {
+    if (!stage || !follow || follow.hidden) return;
+    var wrap = stage.querySelector(".video-wrap");
+    if (!wrap) return;
+    var h = wrap.getBoundingClientRect().height;
+    if (h > 40) follow.style.maxHeight = Math.round(h) + "px";
+  }
+  function showExpand(show) {
+    if (!expandBtn) return;
+    expandBtn.hidden = !show;
+  }
   function openFollow() {
     if (!stage || !follow || followOpened) return;
     follow.hidden = false;
     stage.classList.add("is-follow-open");
     followOpened = true;
+    userCollapsed = false;
+    showExpand(false);
+    requestAnimationFrame(function () {
+      syncFollowHeight();
+      requestAnimationFrame(syncFollowHeight);
+    });
   }
   function collapseFollow() {
     if (!stage || !follow) return;
     follow.hidden = true;
+    follow.style.maxHeight = "";
     stage.classList.remove("is-follow-open");
     followOpened = false;
+    userCollapsed = true;
+    showExpand(true);
   }
   function showFallback(message) {
     if (hint) hint.textContent = message;
@@ -273,7 +296,12 @@
     setActive(findCue(t), false);
   }
   function onStateChange(ev) {
-    try { if (ev && ev.data === 1) openFollow(); } catch (e) {}
+    try {
+      if (ev && ev.data === 1) {
+        if (!userCollapsed) openFollow();
+        else showExpand(true);
+      }
+    } catch (e) {}
     tick();
   }
   function render(list) {
@@ -313,6 +341,12 @@
   if (collapseBtn) {
     collapseBtn.addEventListener("click", function () { collapseFollow(); });
   }
+  if (expandBtn) {
+    expandBtn.addEventListener("click", function () { openFollow(); });
+  }
+  window.addEventListener("resize", function () {
+    if (followOpened) syncFollowHeight();
+  });
   if (panel) {
     ["wheel", "touchstart", "pointerdown"].forEach(function (name) {
       panel.addEventListener(name, function () { scrollLock = Date.now() + 7000; }, { passive: true });
