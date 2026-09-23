@@ -449,18 +449,16 @@
   .talk-layout.is-follow-open {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+    grid-template-areas: "main follow";
     gap: 18px 22px;
     align-items: start;
   }
   .talk-layout.is-follow-open > .talk-main {
-    grid-column: 1;
-    grid-row: 1;
+    grid-area: main;
     min-width: 0;
   }
-  .talk-layout.is-follow-open > .follow-panel,
-  .talk-layout.is-follow-open > .transcript.follow-panel {
-    grid-column: 2;
-    grid-row: 1;
+  .talk-layout.is-follow-open > section.transcript.follow-panel {
+    grid-area: follow;
   }
   .talk-main { min-width: 0; }
   .talk-stage {
