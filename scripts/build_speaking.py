@@ -500,7 +500,7 @@ def reading_block(slug: str) -> str:
         return ""
     return """      <section class="reading-transcript" aria-labelledby="reading-h">
         <h2 id="reading-h">Written Transcript</h2>
-        <p class="reading-note">Cleaned up copy.</p>
+        <p class="reading-note"></p>
         %s
       </section>""" % body
 
