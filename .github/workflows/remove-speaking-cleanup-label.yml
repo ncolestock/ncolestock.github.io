@@ -18,7 +18,7 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          label = '        <p class="reading-note">Cleaned up copy.</p>\\n'
+          label = 'Cleaned up copy.'
           builder = Path('scripts/build_speaking.py')
           source = builder.read_text(encoding='utf-8')
           updated = source.replace(label, '')
