@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - ".restore-speaking/**"
+      - ".restore-speaking/TRIGGER"
 jobs:
   restore:
     runs-on: ubuntu-latest
@@ -11,34 +11,31 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Assemble and commit build_speaking.py
+        with:
+          fetch-depth: 0
+      - name: Restore build_speaking.py from 51ab7c73 and add talk-header.css
         run: |
           set -euo pipefail
+          git show 51ab7c73668426f0b2871757de0084c3e267f242:scripts/build_speaking.py > scripts/build_speaking.py
           python3 <<'PY'
           from pathlib import Path
-          import base64, hashlib, json
-          root = Path(".restore-speaking")
-          man = json.loads((root/"MANIFEST.json").read_text())
-          parts = [root/f"build_speaking.b64.{i:02d}" for i in range(man["parts"])]
-          for p in parts:
-              assert p.exists(), p
-          b64 = "".join(p.read_text().strip() for p in parts)
-          data = base64.b64decode(b64)
-          digest = hashlib.sha256(data).hexdigest()
-          assert digest == man["sha256"], (digest, man["sha256"])
-          path = Path(man["path"])
-          path.write_bytes(data)
-          text = data.decode("utf-8")
-          assert "python3" in text.splitlines()[0]
-          assert "PLACEHOLDER" not in text
-          print("restored", path, len(data), digest)
+          p = Path("scripts/build_speaking.py")
+          t = p.read_text()
+          assert t.startswith("#!/usr/bin/env python3"), t[:40]
+          assert "PLACEHOLDER" not in t
+          needle = '<link rel="stylesheet" href="/style.css">'
+          add = '<link rel="stylesheet" href="/speaking/talk-header.css">'
+          if add not in t:
+            if needle not in t:
+              raise SystemExit("style.css link missing")
+            t = t.replace(needle, needle + "\n" + add, 1)
+            p.write_text(t)
+          print("ok", p.stat().st_size)
           PY
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add scripts/build_speaking.py
-          if git diff --cached --quiet; then
-            echo "no change"
-          else
-            git commit -m "Speaking: restore build_speaking.py from staged parts"
+          if git diff --cached --quiet; then echo no-change; else
+            git commit -m "Speaking: restore build_speaking.py from 51ab7c73 + talk-header.css"
             git push
           fi
