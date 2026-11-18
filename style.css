@@ -145,6 +145,52 @@
     letter-spacing: -0.02em; margin: 0 0 12px; text-wrap: balance;
   }
 
+  /* ---------- Call Your Shot ---------- */
+  .shot-list { list-style: none; margin: 8px 0 0; padding: 0; }
+  .shot {
+    padding: 28px 0 30px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .shot-list > .shot:first-of-type { border-top: 1px solid var(--hair); }
+  .shot-fields { margin: 0; }
+  .shot-row {
+    display: grid;
+    grid-template-columns: 11.5em minmax(0, 1fr);
+    column-gap: 18px;
+    align-items: baseline;
+    margin: 0 0 12px;
+  }
+  .shot-row:last-child { margin-bottom: 0; }
+  .shot-row dt {
+    font-family: var(--sans); font-size: 12px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent);
+    margin: 0;
+  }
+  .shot-row dd {
+    margin: 0;
+    font-family: var(--serif); font-size: 18.5px; line-height: 1.5; color: var(--ink);
+  }
+  .shot-row dd time {
+    font-family: var(--sans); font-size: 13.5px; letter-spacing: 0.01em; color: var(--ink-soft);
+  }
+  @media (max-width: 640px) {
+    .shot-row { grid-template-columns: minmax(0, 1fr); gap: 4px; margin-bottom: 16px; }
+  }
+  /* Year labels, used only when shots span more than one year.
+     Never sticky and never a frosted/dark band. */
+  .shot-year {
+    display: block;
+    margin: 0; padding: 22px 0 8px;
+    background: transparent;
+    position: static;
+  }
+  .shot-year-label {
+    font-family: var(--sans); font-size: 12px; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+    margin: 0; line-height: 1;
+  }
+  .shot-list .shot-year + .shot { border-top: none; padding-top: 10px; }
+
   /* ---------- Thoughts ---------- */
   .thoughts { padding: clamp(30px, 6vw, 46px) 0 0; }
   #view-thoughts .thoughts { padding-top: 0; }
