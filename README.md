@@ -5,9 +5,10 @@ GitHub Pages at **https://nathan.colestock.me**.
 
 - Home / bio: `/` (`index.html`)
 - Essays: each gets its own real folder, e.g. `/321-votes/` (`321-votes/index.html`)
-- Speaking: `/speaking/` — generated from `speaking/talks.json`
 - Reading: `/reading/` (`reading/index.html`)
 - Thoughts (live X feed): `/thoughts/` (`thoughts/index.html`)
+- Call Your Shot: `/call-your-shot/` (`call-your-shot/index.html`, from `shots.json`)
+- Scripture index: `/index/` (`index/index.html`)
 - Shared styles: `style.css`
 - Shared headshot: `avatar.jpg` (also used as the default social-share image)
 
@@ -40,21 +41,6 @@ After pushing, sanity-check the preview with a tool like
 https://www.opengraph.xyz/ or Twitter's card validator before texting the
 link around, since Facebook/Twitter/etc. cache scraped previews aggressively.
 
-## Speaking
-
-Talks are data in `speaking/talks.json`, not hand-copied HTML. The build
-sorts by date, newest first, and writes `speaking/index.html` plus one
-folder per talk.
-
-1. Add an object: `date` (`YYYY-MM-DD`), `title`, `scripture` (or `null`),
-   `kind` (`sermon` or `conference`), `youtube` (the 11-character id), `slug`.
-2. Run `python3 scripts/build_speaking.py`.
-3. Commit the JSON and the generated pages.
-
-Sermons show scripture. A conference talk leaves `scripture` null. Only Nathan
-at Christ the King belongs in the file — the confirmed set is
-`nathan-ctk-sermons-strict-catalog.md`. Do not add other preachers.
-
 ## The Thoughts tab (live X feed)
 
 `/thoughts/` shows @build_n_fight's posts as native X embeds, newest first.
@@ -73,3 +59,16 @@ those from a list of status IDs, and a small script keeps the list current.
   chronologically, so re-runs never lose or reorder posts. Then commit + push.
 - **Add one by hand:** drop the status ID as a new first line inside the markers.
 - The account must stay **public** for embeds to render.
+
+## Call Your Shot
+
+`/call-your-shot/` lists public shots, newest first. Each entry has the date it
+was called, the date it must be true, the shot, and why. An optional `status`
+field can record the result later.
+
+To add a shot, prepend an object to `call-your-shot/shots.json` and run:
+
+```bash
+python3 scripts/build_call_your_shot.py
+```
+
