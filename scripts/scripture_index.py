@@ -226,7 +226,7 @@ def collect_citations() -> dict[tuple, list[dict]]:
     # Writing: essay HTML pages (anything with an article that isn't section hubs)
     skip_dirs = {
         "speaking", "reading", "thoughts", "index", "scripts", "manuscripts",
-        "speaking-seed", ".git", "node_modules",
+        "call-your-shot", "speaking-seed", ".git", "node_modules",
     }
     for path in ROOT.rglob("index.html"):
         rel = path.relative_to(ROOT)

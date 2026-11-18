@@ -100,6 +100,7 @@ SECTIONS = (
     ("Speaking", "/speaking/"),
     ("Reading", "/reading/"),
     ("Thoughts", "/thoughts/"),
+    ("Call Your Shot", "/call-your-shot/"),
     ("Index", "/index/"),
 )
 
